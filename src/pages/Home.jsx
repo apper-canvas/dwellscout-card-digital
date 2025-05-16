@@ -74,6 +74,7 @@ const featuredProperties = [
 
 function Home() {
   const [savedProperties, setSavedProperties] = useState([]);
+  const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   
   useEffect(() => {
     // Load saved properties from localStorage
@@ -98,6 +99,16 @@ function Home() {
       localStorage.setItem('savedProperties', JSON.stringify(newSaved));
       return newSaved;
     });
+  }, []);
+
+  const handleCategoryClick = useCallback((type) => {
+    setSelectedPropertyType(type.toLowerCase());
+    toast.info(`Showing ${type.toLowerCase()} properties`);
+  }, []);
+
+  const clearPropertyTypeFilter = useCallback(() => {
+    setSelectedPropertyType(null);
+    toast.info("Filter cleared - showing all properties");
   }, []);
   
 
@@ -152,24 +163,32 @@ function Home() {
               count={534} 
               icon={<BuildingIcon className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+              onClick={() => handleCategoryClick('apartment')}
+              isActive={selectedPropertyType === 'apartment'}
             />
             <CategoryCard 
               title="Houses" 
               count={1245} 
               icon={<HomeIcon className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+              onClick={() => handleCategoryClick('house')}
+              isActive={selectedPropertyType === 'house'}
             />
             <CategoryCard 
               title="Commercial" 
               count={328} 
               icon={<BuildingIcon className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+              onClick={() => handleCategoryClick('commercial')}
+              isActive={selectedPropertyType === 'commercial'}
             />
             <CategoryCard 
               title="Land" 
               count={189} 
               icon={<MapPinIcon className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+              onClick={() => handleCategoryClick('land')}
+              isActive={selectedPropertyType === 'land'}
             />
           </div>
         </div>
@@ -191,14 +210,30 @@ function Home() {
       <section className="py-16 bg-surface-50 dark:bg-surface-900">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
-            <h2>Featured Properties</h2>
+            <div className="flex items-center">
+              <h2>{selectedPropertyType ? 'Filtered Properties' : 'Featured Properties'}</h2>
+              {selectedPropertyType && (
+                <span className="ml-3 bg-primary/10 text-primary dark:bg-primary/20 dark:text-secondary-light px-3 py-1 rounded-full text-sm font-medium capitalize">
+                  {selectedPropertyType} • {featuredProperties.filter(p => p.type === selectedPropertyType).length} listings
+                </span>
+              )}
+            </div>
+            {selectedPropertyType ? (
+              <button 
+                onClick={clearPropertyTypeFilter}
+                className="text-primary dark:text-secondary-light inline-flex items-center font-medium hover:underline"
+              >
+                Clear filter
+              </button>
+            ) : (
             <a href="#" className="text-primary dark:text-secondary-light inline-flex items-center font-medium hover:underline">
               View all properties <ArrowRightIcon className="w-4 h-4 ml-1" />
             </a>
+            )}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProperties.map(property => (
+            {(selectedPropertyType ? featuredProperties.filter(p => p.type === selectedPropertyType) : featuredProperties).map(property => (
               <PropertyCard 
                 key={property.id}
                 property={property}
@@ -232,12 +267,13 @@ function Home() {
 }
 
 // Category Card Component
-function CategoryCard({ title, count, icon, imageUrl }) {
+function CategoryCard({ title, count, icon, imageUrl, onClick, isActive = false }) {
   return (
     <motion.div 
       whileHover={{ y: -5, scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className="card group cursor-pointer relative overflow-hidden"
+      className={`card group cursor-pointer relative overflow-hidden ${isActive ? 'ring-2 ring-accent ring-offset-2 ring-offset-surface-50 dark:ring-offset-surface-900' : ''}`}
+      onClick={onClick}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 z-10"></div>
       <img 
