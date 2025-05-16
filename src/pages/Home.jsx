@@ -15,6 +15,15 @@ const SquareIcon = getIcon('Square');
 const HeartIcon = getIcon('Heart');
 const ArrowRightIcon = getIcon('ArrowRight');
 
+// Format currency
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  }).format(price);
+};
+
 // Sample property data
 const featuredProperties = [
   {
@@ -89,14 +98,6 @@ function Home() {
     });
   };
   
-  // Format currency
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
 
   return (
     <div>
