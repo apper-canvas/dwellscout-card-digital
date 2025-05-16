@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-toastify'; 
 import { motion } from 'framer-motion';
 import MainFeature from '../components/MainFeature';
 import { getIcon } from '../utils/iconUtils';
@@ -80,9 +80,11 @@ function Home() {
     const saved = JSON.parse(localStorage.getItem('savedProperties') || '[]');
     setSavedProperties(saved);
   }, []);
-  
-  const toggleSaveProperty = (propertyId) => {
-    setSavedProperties(prev => {
+
+  // Memoize the toggleSaveProperty function to prevent recreating it on each render
+  const toggleSaveProperty = useCallback((propertyId) => {
+    setSavedProperties((prev) => {
+      // Create a new array based on previous state
       let newSaved;
       if (prev.includes(propertyId)) {
         newSaved = prev.filter(id => id !== propertyId);
@@ -96,7 +98,7 @@ function Home() {
       localStorage.setItem('savedProperties', JSON.stringify(newSaved));
       return newSaved;
     });
-  };
+  }, []);
   
 
   return (
