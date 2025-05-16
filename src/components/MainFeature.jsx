@@ -5,17 +5,17 @@ import { getIcon } from '../utils/iconUtils';
 
 // Get icon components
 const SearchIcon = getIcon('Search');
-const HomeIcon = getIcon('Home');
-const BuildingIcon = getIcon('Building');
+const HouseIcon = getIcon('Home');
+const BuildingIcon = getIcon('Building2');
 const DollarSignIcon = getIcon('DollarSign');
 const BedDoubleIcon = getIcon('BedDouble');
 const ShowerHeadIcon = getIcon('ShowerHead');
 const SquareIcon = getIcon('Square');
 const XIcon = getIcon('X');
-const FilterIcon = getIcon('Filter');
+const FilterIcon = getIcon('SlidersHorizontal');
 const MapPinIcon = getIcon('MapPin');
 const CheckIcon = getIcon('Check');
-const InfoIcon = getIcon('Info');
+const InfoIcon = getIcon('AlertCircle');
 const ChevronDownIcon = getIcon('ChevronDown');
 
 // Sample property data
@@ -303,7 +303,7 @@ const MainFeature = () => {
                   <option value="apartment">Apartment</option>
                   <option value="condo">Condo</option>
                   <option value="land">Land</option>
-                </select>
+                  <HouseIcon className="w-5 h-5 text-surface-400" />
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <HomeIcon className="w-5 h-5 text-surface-400" />
                 </div>
@@ -330,7 +330,7 @@ const MainFeature = () => {
                   <option value="for-rent">For Rent</option>
                 </select>
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <DollarSignIcon className="w-5 h-5 text-surface-400" />
+                  <getIcon('Tags') className="w-5 h-5 text-surface-400" />
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <ChevronDownIcon className="w-5 h-5 text-surface-400" />
@@ -557,7 +557,7 @@ const PropertySearchItem = ({ property, formatPrice }) => {
         
         <div className="flex flex-wrap gap-4 mb-4">
           <div className="flex items-center">
-            <HomeIcon className="w-4 h-4 text-primary dark:text-secondary-light mr-1" />
+            <HouseIcon className="w-4 h-4 text-primary dark:text-secondary-light mr-1" />
             <span className="text-sm capitalize">{type}</span>
           </div>
           <div className="flex items-center">
@@ -579,7 +579,7 @@ const PropertySearchItem = ({ property, formatPrice }) => {
           <div className="flex flex-wrap gap-2">
             {amenities.map((amenity, index) => (
               <div key={index} className="bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 text-xs py-1 px-2 rounded-full flex items-center">
-                <CheckIcon className="w-3 h-3 mr-1" />
+                <getIcon('BadgeCheck') className="w-3 h-3 mr-1" />
                 {amenity}
               </div>
             ))}

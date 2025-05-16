@@ -6,14 +6,14 @@ import { getIcon } from '../utils/iconUtils';
 
 // Get the icon components
 const HomeIcon = getIcon('Home');
-const BuildingIcon = getIcon('Building');
-const MapPinIcon = getIcon('MapPin');
+const ApartmentIcon = getIcon('Building2');
+const MapPinIcon = getIcon('MapPin'); 
 const DollarSignIcon = getIcon('DollarSign');
 const BedDoubleIcon = getIcon('BedDouble');
 const ShowerHeadIcon = getIcon('ShowerHead');
 const SquareIcon = getIcon('Square');
 const HeartIcon = getIcon('Heart');
-const ArrowRightIcon = getIcon('ArrowRight');
+const ArrowRightIcon = getIcon('ArrowRight'); 
 
 // Format currency
 const formatPrice = (price) => {
@@ -166,7 +166,7 @@ function Home() {
             <CategoryCard 
               title="Apartments" 
               count={534} 
-              icon={<BuildingIcon className="w-6 h-6" />}
+              icon={<ApartmentIcon className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
               onClick={() => handleCategoryClick('apartment')}
               isActive={selectedPropertyType === 'apartment'}
@@ -182,7 +182,7 @@ function Home() {
             <CategoryCard 
               title="Commercial" 
               count={328} 
-              icon={<BuildingIcon className="w-6 h-6" />}
+              icon={<getIcon('Store') className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
               onClick={() => handleCategoryClick('commercial')}
               isActive={selectedPropertyType === 'commercial'}
@@ -190,7 +190,7 @@ function Home() {
             <CategoryCard 
               title="Land" 
               count={189} 
-              icon={<MapPinIcon className="w-6 h-6" />}
+              icon={<getIcon('LandPlot') className="w-6 h-6" />}
               imageUrl="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
               onClick={() => handleCategoryClick('land')}
               isActive={selectedPropertyType === 'land'}

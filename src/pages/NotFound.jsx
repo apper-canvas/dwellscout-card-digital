@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getIcon } from '../utils/iconUtils';
 
-const HomeIcon = getIcon('Home');
+const HomeIcon = getIcon('House');
 const ArrowLeftIcon = getIcon('ArrowLeft');
 
 const NotFound = () => {
