@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { toast } from 'react-toastify'; 
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import MainFeature from '../components/MainFeature';
 import { getIcon } from '../utils/iconUtils';
@@ -75,8 +75,9 @@ const featuredProperties = [
 function Home() {
   const [savedProperties, setSavedProperties] = useState([]);
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
+  const filteredPropertiesRef = useRef(null);
   
-  useEffect(() => {
+  useEffect(() => { 
     // Load saved properties from localStorage
     const saved = JSON.parse(localStorage.getItem('savedProperties') || '[]');
     setSavedProperties(saved);
@@ -101,9 +102,13 @@ function Home() {
     });
   }, []);
 
-  const handleCategoryClick = useCallback((type) => {
+  const handleCategoryClick = useCallback((type) => { 
     setSelectedPropertyType(type.toLowerCase());
     toast.info(`Showing ${type.toLowerCase()} properties`);
+    // Scroll to the filtered properties section with a smooth animation
+    setTimeout(() => {
+      filteredPropertiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }, []);
 
   const clearPropertyTypeFilter = useCallback(() => {
@@ -162,7 +167,7 @@ function Home() {
               title="Apartments" 
               count={534} 
               icon={<BuildingIcon className="w-6 h-6" />}
-              imageUrl="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+              imageUrl="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
               onClick={() => handleCategoryClick('apartment')}
               isActive={selectedPropertyType === 'apartment'}
             />
@@ -208,13 +213,13 @@ function Home() {
       
       {/* Featured Properties */}
       <section className="py-16 bg-surface-50 dark:bg-surface-900">
-        <div className="container mx-auto px-4">
+        <div ref={filteredPropertiesRef} className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
-            <div className="flex items-center">
+            <div className="flex flex-wrap items-center gap-2">
               <h2>{selectedPropertyType ? 'Filtered Properties' : 'Featured Properties'}</h2>
               {selectedPropertyType && (
-                <span className="ml-3 bg-primary/10 text-primary dark:bg-primary/20 dark:text-secondary-light px-3 py-1 rounded-full text-sm font-medium capitalize">
-                  {selectedPropertyType} • {featuredProperties.filter(p => p.type === selectedPropertyType).length} listings
+                <span className="ml-3 bg-primary/10 text-primary dark:bg-primary/20 dark:text-secondary-light px-3 py-1 rounded-full text-sm font-medium capitalize border border-primary/20 dark:border-primary/30 shadow-sm animate-pulse-subtle">
+                  <span className="inline-block mr-1">🔍</span> {selectedPropertyType} • {featuredProperties.filter(p => p.type === selectedPropertyType).length} listings
                 </span>
               )}
             </div>
@@ -272,13 +277,13 @@ function CategoryCard({ title, count, icon, imageUrl, onClick, isActive = false 
     <motion.div 
       whileHover={{ y: -5, scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className={`card group cursor-pointer relative overflow-hidden ${isActive ? 'ring-2 ring-accent ring-offset-2 ring-offset-surface-50 dark:ring-offset-surface-900' : ''}`}
+      className={`card group cursor-pointer relative overflow-hidden ${isActive ? 'ring-2 ring-accent ring-offset-4 ring-offset-surface-50 dark:ring-offset-surface-900 shadow-lg scale-[1.02]' : ''}`}
       onClick={onClick}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 z-10"></div>
       <img 
         src={imageUrl} 
-        alt={title}
+        alt={title} 
         className="w-full h-48 object-cover transition-all duration-500 group-hover:scale-110"
       />
       <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end">
@@ -288,7 +293,7 @@ function CategoryCard({ title, count, icon, imageUrl, onClick, isActive = false 
             {count} listings
           </div>
         </div>
-        <div className="flex items-center mt-3">
+        <div className={`flex items-center mt-3 ${isActive ? 'text-accent font-medium' : 'text-white/90'}`}>
           {icon}
           <span className="text-white/90 ml-2 text-sm">View properties</span>
         </div>
